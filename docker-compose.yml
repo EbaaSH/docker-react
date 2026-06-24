@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  web:
+  # this comand for working with windows to reference the docker file to local machine
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    build: 
+    # where I will search for the docker file
+      context: .
+      dockerfile: Dockerfile.dev
+    ports: 
+      - "3000:3000"
+    # this will make the reference between the docker and the local machine for the updates
+    volumes:
+      - /app/node_modules
+      - .:/app
+
+  tests:
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    # override the nom run start to test
+    command: ["npm", "run", "test"]
