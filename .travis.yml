@@ -1,0 +1,11 @@
+# permissions to run docker commands are required
+sudo: required
+# docker is required to build and run the docker image
+services:
+  - docker
+
+before_install:
+  - docker build -t ebaa/docker-react -f Dockerfile.dev .
+
+script:
+  - docker run -e CI=true ebaa/docker-react npm run test
