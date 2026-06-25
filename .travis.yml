@@ -9,3 +9,19 @@ before_install:
 
 script:
   - docker run -e CI=true ebaa/docker-react npm run test
+
+deploy:
+  # based on the provider you are using in this case we are using AWS Elastic Beanstalk
+  provider: elasticbeanstalk
+  region: "us_west-2"
+  app: "docker-react"
+  env: "DockerReact-env"
+  # s3 bucket name
+  bucket_name: "elasticbeanstalk-us-west-2-123456789012"
+  bucket_path: "docker-react"
+  on:
+    branch: main
+  # search for AIM to get the access key and secret key from the environment variables
+  # and then create new user and use them to access AWS after add these key to the enivroment variables in Travis CI
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
